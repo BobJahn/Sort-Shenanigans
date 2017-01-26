@@ -1,0 +1,105 @@
+<!–– Robert Jahn. Testing out some sort algorithms. Peculiar, but using insertion sort in reverse order seems to be faster than
+	the randomized case. Working with just 10,000 integers. Will start to get rather sluggish as those orders of 10 increase.
+––>
+
+<html>
+<style>
+
+</style>
+
+<head>
+<title>Sorts</title>
+
+</head>
+
+<body>
+	
+
+<h1>Timing some sorting algorithms. <br>
+	<button id="generate1" onclick="randomNumbers()">Generate Random Numbers!</button>
+	<button id="generate2" onclick="reverseOrderNumbers()">Generate Reversed Numbers!</button> <BR>
+	<button id="sort1" onclick="insertionSort()">Insertion Sort!</button>
+	<button id="sort2" onclick="bubbleSort()">Bubble Sort!</button> <BR>
+</h1>
+
+<h4 id="unsorted numbers">
+	
+</h4>
+
+<h4 id="sorted numbers">
+	
+</h4>
+
+<h1 id="time taken">
+	
+</h1>
+
+
+<script>
+var numbers = [];
+
+// Populate the array with random integers between 1 and 1000.
+function randomNumbers() {
+	numbers = [];
+	document.getElementById("sorted numbers").innerHTML = "After call: " + numbers;
+	document.getElementById("time taken").innerHTML = "";
+	
+	for(i = 0; i < 10000; i++) {
+		numbers.push(Math.floor((Math.random() * 10000) + 1));
+	}
+	document.getElementById("unsorted numbers").innerHTML = "Before call: " + numbers;
+}
+
+// Populate the array with numbers in reversed orders.
+function reverseOrderNumbers() {
+	numbers = [];
+	document.getElementById("sorted numbers").innerHTML = "After call: " + numbers;
+	document.getElementById("time taken").innerHTML = "";
+	
+	for(i = 0; i < 10000; i++) {
+		numbers.push(10000-i);
+	}
+	document.getElementById("unsorted numbers").innerHTML = "Before call: " + numbers;
+}
+
+function insertionSort() {
+	var start = new Date();
+	for(i = 0; i < numbers.length; i++) {
+		for(j = i; j < numbers.length; j++) {
+			if(numbers[i] > numbers[j]) {
+				swap(i,j);
+			}
+		}
+	}
+	var end = new Date();
+	document.getElementById("time taken").innerHTML = "Time taken: " + (end.getTime()-start.getTime()) / 1000;
+	document.getElementById("sorted numbers").innerHTML = "After call: " + numbers;
+}
+
+function bubbleSort() {
+	var start = new Date();
+	for(i = 0; i < numbers.length; i++) {
+		for(j = 0; j < numbers.length - i - 1; j++) {
+			if(numbers[j] > numbers[j+1]) {
+				swap(j,j+1);
+			}
+		}
+	}
+	var end = new Date();
+	document.getElementById("time taken").innerHTML = "Time taken: " + (end.getTime()-start.getTime()) / 1000;
+	document.getElementById("sorted numbers").innerHTML = "After call: " + numbers;
+}
+
+
+function swap(i,j){
+	var temp = numbers[i];
+	numbers[i] = numbers[j];
+	numbers[j] = temp;
+}
+
+</script>
+
+
+</body>
+
+</html>
