@@ -1,5 +1,8 @@
 <!–– Robert Jahn. Testing out some sort algorithms. Peculiar, but using insertion sort in reverse order seems to be faster than
-	the randomized case. Working with just 10,000 integers. Will start to get rather sluggish as those orders of 10 increase.
+	the randomized case. Working with just 5,000 integers. Will start to get rather sluggish as those orders of 10 increase.
+	
+	Quicksort ends up being very slow in comparison, which does not make sense considering the big-O complexities. My only reasoning
+	as of right now is that recursion is slow in javascript. The quicksort is recursive where the other two are purely iterative.
 ––>
 
 <html>
@@ -19,7 +22,8 @@
 	<button id="generate1" onclick="randomNumbers()">Generate Random Numbers!</button>
 	<button id="generate2" onclick="reverseOrderNumbers()">Generate Reversed Numbers!</button> <BR>
 	<button id="sort1" onclick="insertionSort()">Insertion Sort!</button>
-	<button id="sort2" onclick="bubbleSort()">Bubble Sort!</button> <BR>
+	<button id="sort2" onclick="bubbleSort()">Bubble Sort!</button>
+	<button id="sort3" onclick="quick()">Quick Sort!</button> <BR>
 </h1>
 
 <h4 id="unsorted numbers">
@@ -44,8 +48,8 @@ function randomNumbers() {
 	document.getElementById("sorted numbers").innerHTML = "After call: " + numbers;
 	document.getElementById("time taken").innerHTML = "";
 	
-	for(i = 0; i < 10000; i++) {
-		numbers.push(Math.floor((Math.random() * 10000) + 1));
+	for(i = 0; i < 5000; i++) {
+		numbers.push(Math.floor((Math.random() * 5000) + 1));
 	}
 	document.getElementById("unsorted numbers").innerHTML = "Before call: " + numbers;
 }
@@ -56,8 +60,8 @@ function reverseOrderNumbers() {
 	document.getElementById("sorted numbers").innerHTML = "After call: " + numbers;
 	document.getElementById("time taken").innerHTML = "";
 	
-	for(i = 0; i < 10000; i++) {
-		numbers.push(10000-i);
+	for(i = 0; i < 5000; i++) {
+		numbers.push(5000-i);
 	}
 	document.getElementById("unsorted numbers").innerHTML = "Before call: " + numbers;
 }
@@ -91,6 +95,41 @@ function bubbleSort() {
 }
 
 
+function quick() {
+	quickSort(0, numbers.length - 1);
+}
+
+function quickSort(low, high) {
+	var start = new Date();
+	
+	if(low < high) {
+		var pivot = partition(low, high);
+		quickSort(low, pivot - 1);
+		quickSort(pivot + 1, high);
+	}
+	
+	
+	var end = new Date();
+	document.getElementById("time taken").innerHTML = "Time taken: " + (end.getTime()-start.getTime()) / 1000;
+	document.getElementById("sorted numbers").innerHTML = "After call: " + numbers;
+}
+
+
+function partition(low, high) {
+	pivot = numbers[high];
+	i = low
+	for(j = low; j < high; j++) {
+		if(numbers[j] <= pivot) {
+			swap(i,j);
+			i++;
+		}
+	}
+	swap(i, high);
+	return i;
+}
+
+
+//Helper function for sorts.
 function swap(i,j){
 	var temp = numbers[i];
 	numbers[i] = numbers[j];
